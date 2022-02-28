@@ -1,0 +1,25 @@
+/* --------------------------
+  Functions
+--------------------------- */
+@use "sass:math";
+
+// Call the color palette modifiers
+@function palette($palette, $shade: 'base') {
+  @return map-get(map-get($palettes, $palette), $shade);
+  }
+
+
+// Import if Google Fonts URL is defined
+@if variable-exists(font-url--google) {
+  @import url($font-url--google);
+  }
+
+// Calculate em values
+@function em($target, $context: $base__font-size) {
+  @return math.div($target, $context) * 1em;
+  }
+
+// Calculate rem values
+@function rem($target, $context: $base__font-size) {
+  @return math.div($target, $context) * 1rem;
+  }
