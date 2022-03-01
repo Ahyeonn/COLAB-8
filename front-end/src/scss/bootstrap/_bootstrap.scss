@@ -1,6 +1,7 @@
 /* --------------------------
   Bootstrap
 --------------------------- */
+$light: $color-primary;
 
 // Required
 @import '../../../node_modules/bootstrap/scss/functions';
@@ -11,7 +12,7 @@
 @import '../../../node_modules/bootstrap/scss/reboot';
 
 @import '../../../node_modules/bootstrap/scss/type';
-// @import "bootstrap/scss/images";
+@import "bootstrap/scss/images";
 @import '../../../node_modules/bootstrap/scss/containers';
 @import '../../../node_modules/bootstrap/scss/grid';
 // @import "bootstrap/scss/tables";
@@ -22,14 +23,14 @@
 // @import "bootstrap/scss/button-group";
 @import '../../../node_modules/bootstrap/scss/nav';
 @import '../../../node_modules/bootstrap/scss/navbar'; // Requires nav
-// @import "bootstrap/scss/card";
+@import "bootstrap/scss/card";
 // @import "bootstrap/scss/breadcrumb";
 // @import "bootstrap/scss/accordion";
 // @import "bootstrap/scss/pagination";
 // @import "bootstrap/scss/badge";
 // @import "bootstrap/scss/alert";
 // @import "bootstrap/scss/progress";
-// @import "bootstrap/scss/list-group";
+@import "bootstrap/scss/list-group";
 // @import 'bootstrap/scss/close';
 // @import "bootstrap/scss/toasts";
 //@import '../../../node_modules/bootstrap/scss/modal'; // Requires transitions
