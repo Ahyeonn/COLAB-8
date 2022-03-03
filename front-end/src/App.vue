@@ -5,7 +5,9 @@
 
 <template>
   <TheHeader />
-  <router-view/>
+  <div class="container">
+    <router-view/>
+  </div>
   <TheFooter />
 </template>
 
