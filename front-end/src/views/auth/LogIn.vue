@@ -1,5 +1,6 @@
 <template>
   <p>Log in view</p>
+  <p>Let's test it!</p>
 </template>
 
 <script>
