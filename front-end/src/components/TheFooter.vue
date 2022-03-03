@@ -1,5 +1,5 @@
 <template>
-  <footer class="fixed-bottom text-center">
+  <footer class="text-center mt-5">
     <!-- Social Media section -->
     <div class="social-media d-flex justify-content-center">
       <p class="pe-2">Follow us on</p>
