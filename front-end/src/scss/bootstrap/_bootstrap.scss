@@ -1,7 +1,12 @@
 /* --------------------------
   Bootstrap
 --------------------------- */
-$light: $color-primary;
+$light             : $color-primary;
+$primary           : $color-primary;
+
+// Card
+$card-border-color : $color-primary;
+$card-border-width : 3px;
 
 // Required
 @import '../../../node_modules/bootstrap/scss/functions';
