@@ -2,7 +2,7 @@
   <nav class="navbar navbar-expand-lg navbar-light bg-light" :class="{ 'round-nav': isVisible }">
     <div class="container-fluid">
       <button
-          class="navbar-toggler"
+          class="navbar-toggler p-1 border-0"
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#navbarToggler"
@@ -13,7 +13,7 @@
       >
         <span class="navbar-toggler-icon"></span>
       </button>
-      <a class="navbar-brand" href="#">Navbar</a>
+      <a class="navbar-brand ps-1 fw-bold" href="#">HeadsUp!</a>
       <div class="break flex-grow-1"></div>
       <img class="img-fluid rounded-circle" src="@/assets/user.jpg" alt="User profile image">
       <div class="collapse navbar-collapse" :class="{ show: isVisible }" id="navbarToggler">
