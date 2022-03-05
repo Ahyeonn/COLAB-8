@@ -13,7 +13,7 @@ import BaseButton from "@/components/UI/BaseButton";
           class="form-control"
           name="phone-number"
           label="Phone Number"
-          type="phone"
+          type="tel"
       />
     </div>
     <!-- Password -->
