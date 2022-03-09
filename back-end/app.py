@@ -6,6 +6,7 @@ from user import user
 from event import event
 
 app = Flask(__name__)
+app.secret_key = 'mysecretkey'
 
 app.register_blueprint(user, url_prefix="/users")
 app.register_blueprint(event, url_prefix="/events")

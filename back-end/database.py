@@ -1,6 +1,8 @@
 from pymongo import MongoClient
+import os
 
-client = MongoClient()
+uri = os.environ.get('MONGODB_URI')
+client = MongoClient(uri)
 db = client.Colab8
 users = db.users
 users.create_index("phone_number", unique = True)
