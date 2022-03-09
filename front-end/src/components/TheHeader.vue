@@ -73,6 +73,9 @@ nav {
 
 .nav-item:not(:last-child) {
   border-bottom : 1px solid $color-secondary;
+  @include mq(med) {
+    border: none;
+    }
   }
 
 img {
