@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 from bson.objectid import ObjectId
 from database import *
 import uuid
+import bcrypt
 
 user = Blueprint("user", __name__)
 
