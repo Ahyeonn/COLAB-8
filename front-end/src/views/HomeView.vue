@@ -1,62 +1,91 @@
-<script setup>
+<script>
 import BaseInput from "@/components/Form/BaseInput";
 import BaseButton from "@/components/UI/BaseButton";
+
+export default {
+  name: "HomeView",
+  components: {
+    BaseInput,
+    BaseButton
+  },
+  data() {
+    return {
+      meeting: {
+        hostName: '',
+        name: '',
+        date: '',
+        time: ''
+      }
+    }
+  },
+  methods: {
+    onSubmit() {
+      console.log(this.meeting)
+    }
+  }
+}
 </script>
 
 <template>
-    <h3 class="mt-3 mb-4"> 👋 Hi there! Let's get started on your heads up!</h3>
-    <div class="card">
-      <div class="card-body">
-        <form>
-          <!-- Name -->
-          <div class="mb-3">
-            <BaseInput
-                class="form-control"
-                name="name"
-                label="Name"
-            />
-          </div>
-          <!-- Meeting name -->
-          <div class="mb-3">
-            <BaseInput
-                class="form-control"
-                name="meeting-name"
-                label="Meeting name"
-            />
-          </div>
-          <!-- Date -->
-          <div class="mb-3">
-            <BaseInput
-                class="form-control"
-                name="meeting-name"
-                label="Meeting name"
-                type="date"
-            />
-          </div>
-          <!-- Time -->
-          <div class="mb-3">
-            <BaseInput
-                class="form-control"
-                name="meeting-name"
-                label="Meeting name"
-                type="time"
-            />
-          </div>
-          <div class="text-center py-3">
-            <BaseButton
-                type="submit"
-                class="btn-primary text-center"
-                label="Continue"
-            />
-          </div>
-        </form>
-      </div>
+  <h3 class="mt-3 mb-4"> 👋 Hi there! Let's get started on your heads up!</h3>
+  <div class="card">
+    <div class="card-body">
+      <form @submit.prevent="onSubmit">
+        <!-- Name -->
+        <div class="mb-3">
+          <BaseInput
+              class="form-control"
+              name="hostName"
+              label="Name"
+              placeholder="Host name"
+              v-model="meeting.hostName"
+          />
+        </div>
+        <!-- Meeting name -->
+        <div class="mb-3">
+          <BaseInput
+              class="form-control"
+              name="meeting-name"
+              label="Meeting name"
+              v-model="meeting.name"
+          />
+        </div>
+        <!-- Date -->
+        <div class="mb-3">
+          <BaseInput
+              class="form-control"
+              name="meeting-date"
+              label="Date"
+              type="date"
+              v-model="meeting.date"
+          />
+        </div>
+        <!-- Time -->
+        <div class="mb-3">
+          <BaseInput
+              class="form-control"
+              name="meeting-time"
+              label="Time"
+              type="time"
+              min="07:00" max="22:00"
+              v-model="meeting.time"
+          />
+        </div>
+        <div class="text-center py-3">
+          <BaseButton
+              type="submit"
+              class="btn-primary text-center"
+              label="Continue"
+          />
+        </div>
+      </form>
     </div>
+  </div>
 </template>
 
 <style scoped lang="scss">
 .card {
-    border-radius: 36px;
-    padding: 15px 10px;
+  border-radius: 36px;
+  padding: 15px 10px;
   }
 </style>
