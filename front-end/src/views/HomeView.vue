@@ -2,8 +2,6 @@
 import BaseInput from "@/components/Form/BaseInput";
 import BaseButton from "@/components/UI/BaseButton";
 
-// import { mapActions } from 'vuex'
-
 export default {
   name: "HomeView",
   components: {
@@ -30,10 +28,10 @@ export default {
 </script>
 
 <template>
-  <h3 class="my-4"> 👋 Hi there! Let's get started on your heads up!</h3>
+  <h3 class="my-4 text-center"> 👋 Hi there! Let's get started on your heads up!</h3>
   <div class="row">
     <div class="col-md-6 mx-auto">
-      <div class="card">
+      <div class="card shadow">
         <div class="card-body">
           <form @submit.prevent="onSubmit">
             <!-- Name -->
@@ -42,6 +40,7 @@ export default {
                   class="form-control"
                   name="hostName"
                   label="Name"
+                  placeholder="Host Name"
                   :modelValue="meeting.hostName"
                   @input:modelValue="(event) => meeting.hostName = event.target.value"
               />
@@ -82,7 +81,7 @@ export default {
             <div class="text-center py-3">
               <BaseButton
                   type="submit"
-                  class="btn-primary text-center"
+                  class="btn-primary text-center px-5"
                   label="Continue"
               />
             </div>
@@ -94,8 +93,4 @@ export default {
 </template>
 
 <style scoped lang="scss">
-.card {
-  border-radius: 36px;
-  padding: 15px 10px;
-  }
 </style>
