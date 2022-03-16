@@ -23,6 +23,7 @@ export default {
   methods: {
     onSubmit() {
       this.$store.dispatch('createMeeting', this.meeting)
+      this.$router.push({ path : '/contact-info' });
     }
   }
 }
