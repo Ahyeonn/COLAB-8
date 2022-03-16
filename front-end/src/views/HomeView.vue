@@ -2,6 +2,8 @@
 import BaseInput from "@/components/Form/BaseInput";
 import BaseButton from "@/components/UI/BaseButton";
 
+// import { mapActions } from 'vuex'
+
 export default {
   name: "HomeView",
   components: {
@@ -14,13 +16,13 @@ export default {
         hostName: '',
         name: '',
         date: '',
-        time: ''
+        time: '',
       }
     }
   },
   methods: {
     onSubmit() {
-      console.log(this.meeting)
+      this.$store.dispatch('createMeeting', this.meeting)
     }
   }
 }
@@ -37,8 +39,8 @@ export default {
               class="form-control"
               name="hostName"
               label="Name"
-              placeholder="Host name"
-              v-model="meeting.hostName"
+              :modelValue="meeting.hostName"
+              @input:modelValue="(event) => meeting.hostName = event.target.value"
           />
         </div>
         <!-- Meeting name -->
@@ -47,7 +49,8 @@ export default {
               class="form-control"
               name="meeting-name"
               label="Meeting name"
-              v-model="meeting.name"
+              :modelValue="meeting.name"
+              @input:modelValue="(event) => meeting.name = event.target.value"
           />
         </div>
         <!-- Date -->
@@ -57,7 +60,8 @@ export default {
               name="meeting-date"
               label="Date"
               type="date"
-              v-model="meeting.date"
+              :modelValue="meeting.date"
+              @input:modelValue="(event) => meeting.date = event.target.value"
           />
         </div>
         <!-- Time -->
@@ -68,7 +72,8 @@ export default {
               label="Time"
               type="time"
               min="07:00" max="22:00"
-              v-model="meeting.time"
+              :modelValue="meeting.time"
+              @input:modelValue="(event) => meeting.time = event.target.value"
           />
         </div>
         <div class="text-center py-3">
