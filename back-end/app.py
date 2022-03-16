@@ -8,10 +8,9 @@ from contact import contact
 
 app = Flask(__name__)
 app.secret_key = 'mysecretkey'
-app.config["APPLICATION_ROOT"] = "/api"
 
-app.register_blueprint(user, url_prefix="/users")
-app.register_blueprint(event, url_prefix="/events")
+app.register_blueprint(user, url_prefix="/api/users")
+app.register_blueprint(event, url_prefix="/api/events")
 # app.register_blueprint(contact, url_prefix="/contacts")
 
  
