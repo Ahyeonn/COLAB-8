@@ -33,7 +33,7 @@ def signup():
     else:
         return jsonify({'Error' : 'Type the correct number'})
 
-@user.route('/signin', methods=['GET'])
+@user.route('/signin', methods=['POST'])
 def signin():
     phone_number = request.json['phone_number']
     user = users.find_one({'phone_number' : phone_number})
