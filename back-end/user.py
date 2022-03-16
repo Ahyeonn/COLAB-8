@@ -16,12 +16,10 @@ def signup():
     if users.find_one({'phone_number': phone_number}):
         return jsonify({'Error' : 'The phone number already exists!'})
 
-    if len(password) < 8:
-        return jsonify({'Error' : 'Password needs to be minimum 8 characters'})
-
-    hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-
     if len(phone_number) == 12: # +1 123-456-7890
+        if len(password) < 8:
+            return jsonify({'Error' : 'Password needs to be minimum 8 characters'})
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
         user_id = users.insert_one({
             '_id': uuid.uuid4().hex,
             'name': name,

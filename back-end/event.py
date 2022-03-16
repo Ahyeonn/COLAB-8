@@ -12,7 +12,6 @@ def index():
 
     return jsonify({'events' : output}), 200
 
-#If signed in 
 @event.route('/<event_id>', methods=['GET'])
 def show_event(event_id):
     event = events.find_one({'_id': event_id})
