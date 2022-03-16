@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light" :class="{ 'round-nav': isVisible }">
+  <nav class="navbar navbar-expand-lg navbar-light" :class="{ 'round-nav': isVisible }">
     <div class="container-fluid">
       <button
           class="navbar-toggler p-1 border-0"
@@ -56,6 +56,7 @@ export default {
 @import "src/scss/utilities/variables";
 
 nav {
+  background: linear-gradient(180deg, $color-secondary 0%, $color-primary 100%);
   color : $white;
   }
 
