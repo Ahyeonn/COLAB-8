@@ -35,3 +35,4 @@ def add_event():
     event_id = events.insert_one({'_id': uuid.uuid4().hex, 'name': name, 'meeting_name': meeting_name, 'date': date, 'time': time }).inserted_id
     find_event = events.find_one({'_id' : event_id})
     return jsonify(find_event)
+    # contact_id
