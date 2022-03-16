@@ -1,4 +1,5 @@
 import { createStore } from 'vuex'
+import authModule from "./modules/auth";
 
 export default createStore({
     // Note: strict mode should turn off in production
@@ -16,5 +17,7 @@ export default createStore({
             context.commit('ADD_MEETING', meeting);
         }
     },
-    modules: {}
+    modules: {
+        auth: authModule
+    }
 })
