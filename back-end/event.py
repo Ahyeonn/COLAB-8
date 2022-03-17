@@ -12,33 +12,38 @@ def index():
 
     return jsonify({'events' : output}), 200
 
-@event.route('/<event_id>', methods=['GET'])
-def show_event(event_id):
-    event = events.find_one({'_id': event_id})
-    if event:
-        return jsonify({'event' : event}), 200
-
-    return jsonify({'event' : 'not found'}), 404
-
-@event.route('/new', methods=['POST'])
-def new_event():
+@event.route('/create', methods=['POST'])
+def create_event():
     owner_id = request.json['owner_id'] or None
-    name = request.json['name']
+    owner_name = request.json['name']
     event_name = request.json['event_name']
     recipients = request.json['recipients']
     date = request.json['date']
     time = request.json['time']
+    contacts = {}
 
-    event_id = events.insert_one({'_id': uuid.uuid4().hex, 'owner_id': owner_id, 'name': name, 'event_name': event_name, 'date': date, 'recipients': recipients, 'time': time}).inserted_id
+    for name, phone_number in recipients.items():
+        if validate_number(phone_number):
+            contacts[name] = phone_number
 
+    event_id = events.insert_one({'_id': uuid.uuid4().hex, 'owner_id': owner_id, 'name': owner_name, 'event_name': event_name, 'date': date, 'recipients': contacts, 'time': time}).inserted_id
     new_event = events.find_one({'_id' : event_id})
     return jsonify(new_event), 200
+
 
 #If Signed in 
 @event.route('/user/<user_id>', methods=['GET'])
 def get_events_by_user(user_id):
     output = [e for e in events.find({'owner_id': user_id})]
     if output:
-        return jsonify({'events' : output}), 200
+        return jsonify({'events result' : output}), 200
 
-    return jsonify({'events' : 'not found'}), 404
+    return jsonify({'events result' : 'not found'}), 404
+
+@event.route('/<event_id>', methods=['GET'])
+def show_event(event_id):
+    event = events.find_one({'_id': event_id})
+    if event:
+        return jsonify({'event result' : event}), 200
+
+    return jsonify({'event result' : 'not found'}), 404
