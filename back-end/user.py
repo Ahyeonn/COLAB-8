@@ -10,7 +10,7 @@ user = Blueprint("user", __name__)
 @user.route('/signup', methods=['POST']) # Sign up Page
 def signup():
     if 'current_user' in session:
-         return jsonify({'Error' : 'You already signed in'}), 203
+        return jsonify({'Error' : 'You already signed in'}), 203
 
     name = request.json['name']
     phone_number = request.json['phone_number']
@@ -39,7 +39,7 @@ def signup():
 @user.route('/signin', methods=['POST'])
 def signin():
     if 'current_user' in session:
-    return jsonify({'Error' : 'You already signed in'}), 203
+        return jsonify({'Error' : 'You already signed in'}), 203
 
     phone_number = request.json['phone_number']
     user = users.find_one({'phone_number' : phone_number})
