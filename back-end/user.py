@@ -9,14 +9,17 @@ user = Blueprint("user", __name__)
 # User
 @user.route('/signup', methods=['POST']) # Sign up Page
 def signup():
+    if 'current_user' in session:
+         return jsonify({'Error' : 'You already signed in'}), 203
+
     name = request.json['name']
     phone_number = request.json['phone_number']
     password = request.json['password']
 
     if users.find_one({'phone_number': phone_number}):
         return jsonify({'Error' : 'The phone number already exists!'})
-
-    if len(phone_number) == 12: # +1 123-456-7890
+    print(validate_number(phone_number))
+    if validate_number(phone_number): # +1 123-456-7890
         if len(password) < 8:
             return jsonify({'Error' : 'Password needs to be minimum 8 characters'})
         hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
@@ -35,6 +38,9 @@ def signup():
 
 @user.route('/signin', methods=['POST'])
 def signin():
+    if 'current_user' in session:
+    return jsonify({'Error' : 'You already signed in'}), 203
+
     phone_number = request.json['phone_number']
     user = users.find_one({'phone_number' : phone_number})
     if user:
