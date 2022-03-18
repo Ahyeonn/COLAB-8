@@ -6,4 +6,5 @@ client = MongoClient(uri)
 db = client.Colab8
 users = db.users
 users.create_index("phone_number", unique = True)
+contacts = db.contacts
 events = db.events
