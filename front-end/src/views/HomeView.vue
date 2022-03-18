@@ -42,7 +42,7 @@ export default {
                   label="Name"
                   placeholder="Host Name"
                   :modelValue="meeting.hostName"
-                  @input:modelValue="(event) => meeting.hostName = event.target.value"
+                  @input="(event) => meeting.hostName = event.target.value"
               />
             </div>
             <!-- Meeting name -->
@@ -52,7 +52,7 @@ export default {
                   name="meeting-name"
                   label="Meeting name"
                   :modelValue="meeting.name"
-                  @input:modelValue="(event) => meeting.name = event.target.value"
+                  @input="(event) => meeting.name = event.target.value"
               />
             </div>
             <!-- Date -->
@@ -63,7 +63,7 @@ export default {
                   label="Date"
                   type="date"
                   :modelValue="meeting.date"
-                  @input:modelValue="(event) => meeting.date = event.target.value"
+                  @input="(event) => meeting.date = event.target.value"
               />
             </div>
             <!-- Time -->
@@ -75,7 +75,7 @@ export default {
                   type="time"
                   min="07:00" max="22:00"
                   :modelValue="meeting.time"
-                  @input:modelValue="(event) => meeting.time = event.target.value"
+                  @input="(event) => meeting.time = event.target.value"
               />
             </div>
             <div class="text-center py-3">
