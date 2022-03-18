@@ -17,11 +17,13 @@ import TheHeader from "@/components/TheHeader";
   }
 
 .card {
-  border-radius: 36px;
   padding: 15px 10px;
   background:
   linear-gradient(white, white) padding-box,
   linear-gradient(180deg, $color-secondary 0%, $color-primary 100%) border-box !important;
+  }
+.btn-back {
+  background-color: #f0f0f0;
   }
 
 </style>

@@ -81,7 +81,7 @@ export default {
             <div class="text-center py-3">
               <BaseButton
                   type="submit"
-                  class="btn-primary text-center px-5"
+                  class="btn-primary mt-4 py-2 w-75 text-white shadow-sm"
                   label="Continue"
               />
             </div>
