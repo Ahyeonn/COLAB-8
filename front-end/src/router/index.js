@@ -22,6 +22,11 @@ const routes = [
         component: ContactInfo
     },
     {
+        path: '/meeting-confirmation',
+        name: 'MeetingConfirmation',
+        component: () => import('@/views/MeetingConfirmation.vue')
+    },
+    {
         path: '/log-in',
         name: 'LogIn',
         component: LogIn
