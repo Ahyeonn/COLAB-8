@@ -18,16 +18,17 @@ def create_event():
     owner_name = request.json['name']
     event_name = request.json['event_name']
     # recipients = request.json['recipients']
-    recipients = []
+    # recipients = []
     date = request.json['date']
     time = request.json['time']
-    contacts = {}
+    # contacts = {}
 
-    for name, phone_number in recipients.items():
-        if validate_number(phone_number):
-            contacts[name] = phone_number
+    # for name, phone_number in recipients.items():
+        # if validate_number(phone_number):
+        #     contacts[name] = phone_number
 
-    event_id = events.insert_one({'_id': uuid.uuid4().hex, 'owner_id': owner_id, 'name': owner_name, 'event_name': event_name, 'date': date, 'recipients': contacts, 'time': time}).inserted_id
+#     event_id = events.insert_one({'_id': uuid.uuid4().hex, 'owner_id': owner_id, 'name': owner_name, 'event_name': event_name, 'date': date, 'recipients': contacts, 'time': time}).inserted_id
+    event_id = events.insert_one({'_id': uuid.uuid4().hex, 'owner_id': owner_id, 'name': owner_name, 'event_name': event_name, 'date': date, 'time': time}).inserted_id
     new_event = events.find_one({'_id' : event_id})
     return jsonify(new_event), 200
 
