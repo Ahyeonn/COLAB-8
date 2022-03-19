@@ -17,7 +17,8 @@ def create_event():
     owner_id = request.json['owner_id'] or None
     owner_name = request.json['name']
     event_name = request.json['event_name']
-    recipients = request.json['recipients']
+    # recipients = request.json['recipients']
+    recipients = []
     date = request.json['date']
     time = request.json['time']
     contacts = {}
