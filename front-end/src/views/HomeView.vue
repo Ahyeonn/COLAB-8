@@ -19,9 +19,9 @@ export default {
     }
   },
   methods: {
-    onSubmit() {
-      this.$store.dispatch('createMeeting', this.meeting)
-      this.$router.push({ path : '/contact-info' });
+    async onSubmit() {
+      await this.$store.dispatch('createMeeting', this.meeting)
+      await this.$router.push({ path : '/contact-info' });
     }
   }
 }
@@ -39,8 +39,7 @@ export default {
               <BaseInput
                   class="form-control"
                   name="hostName"
-                  label="Name"
-                  placeholder="Host Name"
+                  label="Host name"
                   :modelValue="meeting.hostName"
                   @input="(event) => meeting.hostName = event.target.value"
               />
