@@ -7,11 +7,25 @@ export default createStore({
     strict: true,
     state: {
         meetings: [],
+        meetingMembers: {
+            hostMumber: '',
+            contacts: []
+        }
+    },
+    getters: {
+      getContacts(state) {
+          return state.meetingMembers.contacts.map(({name})=>{
+               return name
+          });
+      }
     },
     mutations: {
         ADD_MEETING(state, meeting) {
             state.meetings.push(meeting)
         },
+        ADD_CONTACT(state, contact) {
+            state.meetingMembers.contacts.push(contact)
+        }
     },
     actions: {
        createMeeting(context, meeting) {

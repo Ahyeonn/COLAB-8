@@ -2,6 +2,8 @@
 import BaseInput from "@/components/Form/BaseInput";
 import BaseButton from "@/components/UI/BaseButton";
 
+import { mapGetters } from 'vuex'
+
 export default {
   name: "ContactInfo",
   components: {
@@ -10,8 +12,15 @@ export default {
   },
   data() {
     return {
-      isVisible: false
+      isVisible: false,
+      contact: {
+        name: '',
+        phoneNumber: ''
+      }
     }
+  },
+  computed: {
+    ...mapGetters(['getContacts'])
   },
   methods: {
     openModal() {
@@ -19,7 +28,12 @@ export default {
     },
     closeModal() {
       this.isVisible = false
-    }
+    },
+    addContact() {
+      this.$store.commit('ADD_CONTACT', this.contact)
+      this.contact = {}
+      this.isVisible = false
+    },
   }
 }
 
@@ -42,6 +56,14 @@ export default {
               />
             </div>
 
+            <!-- contact list -->
+            <ul class="list-unstyled contacts">
+              <li v-for="(contacts, index) in getContacts" :key="index">
+                <svg class="rounded-circle p-2 me-3 my-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M20 22H4v-2a5 5 0 0 1 5-5h6a5 5 0 0 1 5 5v2zm-8-9a6 6 0 1 1 0-12 6 6 0 0 1 0 12z"/></svg>
+              <span>{{contacts}}</span>
+              </li>
+            </ul>
+
             <button
                 class="btn add-contact px-0 d-flex align-items-center mx-auto"
                 type="button"
@@ -63,12 +85,28 @@ export default {
                     <button type="button" class="btn-close" @click="closeModal" data-bs-dismiss="modal"
                             aria-label="Close"></button>
                   </div>
+
                   <div class="modal-body">
-                    <BaseInput class="form-control" name="contact-name" label="Name" />
-                    <BaseInput class="form-control" name="contact-phone-number" label="Phone number" />
+                    <!-- Contact name -->
+                    <BaseInput class="form-control"
+                               name="contact-name"
+                               label="Name"
+                               :modelValue="contact.name"
+                               @input="(event) => contact.name = event.target.value"
+                    />
+                    <!-- Contact Phone number -->
+                    <BaseInput class="form-control"
+                               name="contact-phone-number"
+                               label="Phone number"
+                               :modelValue="contact.phoneNumber"
+                               @input="(event) => contact.phoneNumber = event.target.value"
+                    />
                     <BaseButton type="button" class="btn-primary mt-4 py-2 w-75 text-white shadow-sm text-center"
-                                label="Add" />
+                                label="Add"
+                                @click="addContact"
+                    />
                   </div>
+
                 </div>
               </div>
             </div>
@@ -97,6 +135,13 @@ export default {
 </template>
 
 <style scoped lang="scss">
+.contacts {
+  svg {
+    border: 1px solid gray;
+    width: 40px;
+    height: 40px;
+    }
+  }
 .add-contact {
   width    : 100%;
   color    : $green;
