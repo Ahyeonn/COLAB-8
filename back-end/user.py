@@ -18,7 +18,6 @@ def signup():
 
     if users.find_one({'phone_number': phone_number}):
         return jsonify({'Error' : 'The phone number already exists!'})
-    print(validate_number(phone_number))
     if validate_number(phone_number): # +1 123-456-7890
         if len(password) < 8:
             return jsonify({'Error' : 'Password needs to be minimum 8 characters'})

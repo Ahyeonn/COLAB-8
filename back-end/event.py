@@ -17,8 +17,9 @@ def create_event():
     owner_id = request.json['owner_id'] or None
     owner_name = request.json['name']
     event_name = request.json['event_name']
+    # host_phone = request.json['host_phone']
     # recipients = request.json['recipients']
-    # recipients = []
+    recipients = []
     date = request.json['date']
     time = request.json['time']
     # contacts = {}
@@ -28,6 +29,7 @@ def create_event():
         #     contacts[name] = phone_number
 
 #     event_id = events.insert_one({'_id': uuid.uuid4().hex, 'owner_id': owner_id, 'name': owner_name, 'event_name': event_name, 'date': date, 'recipients': contacts, 'time': time}).inserted_id
+
     event_id = events.insert_one({'_id': uuid.uuid4().hex, 'owner_id': owner_id, 'name': owner_name, 'event_name': event_name, 'date': date, 'time': time}).inserted_id
     new_event = events.find_one({'_id' : event_id})
     return jsonify(new_event), 200
@@ -49,3 +51,20 @@ def show_event(event_id):
         return jsonify({'event result' : event}), 200
 
     return jsonify({'event result' : 'not found'}), 404
+
+@event.route('/add_user', methods=['POST'])
+def add_user_event():
+    recipients = request.json['meetingMembers']['contacts']
+    event_id = request.json['meetingMembers']['eventId']
+    for recipient in recipients:
+        new_recipient = {
+            'name': recipient['name'],
+            'phone_number': recipient['phoneNumber']
+        }
+        if validate_number(new_recipient['phone_number']):
+            events.update_one({'_id': event_id}, {'$push':{'recipients': new_recipient}})
+        else:
+            return jsonify({'Error' : 'Type the correct number'})
+    # event = events.find_one({'_id': event_id}) If he wants the event back or ok result
+    
+    return jsonify({'message' : 'Recipients have been added.'})
