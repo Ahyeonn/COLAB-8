@@ -58,7 +58,7 @@ export default {
               type="submit"
           />
           <p class="pt-3">Don’t have an account?
-            <router-link to="/sign-in">Sign up</router-link>
+            <router-link to="/sign-up">Sign up</router-link>
           </p>
         </div>
       </form>
