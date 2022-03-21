@@ -64,7 +64,7 @@ def add_user_event():
         if validate_number(new_recipient['phone_number']):
             events.update_one({'_id': event_id}, {'$push':{'recipients': new_recipient}})
         else:
-            return jsonify({'Error' : 'Type the correct number'})
+            return jsonify({'Error' : 'Type the correct number'}), 400
     # event = events.find_one({'_id': event_id}) If he wants the event back or ok result
     
-    return jsonify({'message' : 'Recipients have been added.'})
+    return jsonify({'message' : 'Recipients have been added.'}), 200
