@@ -1,9 +1,17 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, abort
 from bson.objectid import ObjectId
 from database import *
 import uuid
 
 event = Blueprint("event", __name__)
+
+@event.errorhandler(400)
+def bad_request(e):
+    return jsonify(error=str(e)), 400
+
+@event.errorhandler(404)
+def not_found(e):
+    return jsonify(error=str(e)), 404
 
 # Events
 @event.route('/', methods=['GET'])
@@ -42,7 +50,7 @@ def get_events_by_user(user_id):
     if output:
         return jsonify({'events result' : output}), 200
 
-    return jsonify({'events result' : 'not found'}), 404
+    abort(404, description='not found')
 
 @event.route('/<event_id>', methods=['GET'])
 def show_event(event_id):
@@ -50,7 +58,7 @@ def show_event(event_id):
     if event:
         return jsonify({'event result' : event}), 200
 
-    return jsonify({'event result' : 'not found'}), 404
+    abort(404, description='not found')
 
 @event.route('/add_user', methods=['POST'])
 def add_user_event():
@@ -64,7 +72,7 @@ def add_user_event():
         if validate_number(new_recipient['phone_number']):
             events.update_one({'_id': event_id}, {'$push':{'recipients': new_recipient}})
         else:
-            return jsonify({'Error' : 'Type the correct number'}), 400
+            abort(400, description='Type the correct number')
     # event = events.find_one({'_id': event_id}) If he wants the event back or ok result
     
     return jsonify({'message' : 'Recipients have been added.'}), 200
