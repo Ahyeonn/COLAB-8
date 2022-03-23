@@ -1,8 +1,10 @@
 from flask import Blueprint, request, jsonify, session, abort
 from bson.objectid import ObjectId
-from database import *
+from extensions import *
 import uuid
 import bcrypt
+from utils import validate_number
+
 
 user = Blueprint("user", __name__)
 
@@ -29,10 +31,12 @@ def signup():
     password = request.json['password']
 
     if users.find_one({'phone_number': phone_number}):
-        abort(403, description='The phone number already exists!')
+        return ValueError('The phone number already exists!')
+        # abort(403, description='The phone number already exists!')
     if validate_number(phone_number): # +1 123-456-7890
         if len(password) < 8:
-            abort(403, description='Password needs to be minimum 8 characters')
+            raise ValueError('Password needs to be minimum 8 characters')
+            # abort(403, description='Password needs to be minimum 8 characters')
         hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
         user_id = users.insert_one({
             '_id': uuid.uuid4().hex,
@@ -45,7 +49,8 @@ def signup():
         session['current_user'] = new_user
         return jsonify([{'name' : new_user['name'], 'phone_number': new_user['phone_number']}]), 201
     else:
-        abort(403, description='Type the correct number')
+        raise ValueError('Type the correct number')
+        # abort(403, description='Type the correct number')
 
 @user.route('/signin', methods=['POST'])
 def signin():

@@ -1,6 +1,7 @@
-from flask import Blueprint, request, jsonify, abort
+from flask import Blueprint, request, jsonify, abort, session
 from bson.objectid import ObjectId
-from database import *
+# from twilio_api import create_rsvp
+from extensions import *
 import uuid
 
 event = Blueprint("event", __name__)
