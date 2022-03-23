@@ -54,6 +54,9 @@ export default {
       this.contact = {}
       this.isVisible = false
     },
+    onSubmit() {
+      this.$router.push({ path : '/meeting-confirmation' });
+    }
   }
 }
 
@@ -65,7 +68,7 @@ export default {
     <div class="col-md-6 mx-auto">
       <div class="card shadow">
         <div class="card-body">
-          <form @submit.prevent>
+          <form @submit.prevent="onSubmit">
             <!-- Host phone-number -->
             <div class="mb-3">
               <BaseInput
@@ -179,13 +182,6 @@ export default {
 </template>
 
 <style scoped lang="scss">
-.contacts {
-  svg {
-    border : 1px solid gray;
-    width  : 40px;
-    height : 40px;
-    }
-  }
 
 .add-contact {
   width  : 100%;

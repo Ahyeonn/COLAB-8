@@ -17,11 +17,20 @@ export default createStore({
           return state.meetingMembers.contacts.map(({name})=>{
                return name
           });
-      }
+      },
+        getMeeting(state) {
+              return state.meetings.map(meeting =>{
+                  console.log(meeting)
+                  return meeting
+              });
+        }
     },
     mutations: {
         ADD_MEETING(state, meeting) {
             state.meetings.push(meeting)
+        },
+        ADD_HOST_NUMBER(state, number) {
+          state.meetingMembers.hostMumber = number
         },
         ADD_CONTACT(state, contact) {
             state.meetingMembers.contacts.push(contact)

@@ -26,4 +26,12 @@ import TheHeader from "@/components/TheHeader";
   background-color: #f0f0f0;
   }
 
+.contacts {
+  svg {
+    border : 1px solid gray;
+    width  : 40px;
+    height : 40px;
+    }
+  }
+
 </style>
