@@ -1,6 +1,7 @@
 <script>
 import BaseInput from "@/components/Form/BaseInput";
 import BaseButton from "@/components/UI/BaseButton";
+import BaseModal from "@/components/BaseModal";
 
 import {mapGetters} from 'vuex'
 import useVuelidate from '@vuelidate/core'
@@ -10,7 +11,8 @@ export default {
   name: "ContactInfo",
   components: {
     BaseInput,
-    BaseButton
+    BaseButton,
+    BaseModal
   },
   setup: () => ({v$: useVuelidate()}),
   data() {
@@ -44,11 +46,8 @@ export default {
     ...mapGetters(['getContacts'])
   },
   methods: {
-    openModal() {
-      this.isVisible = true
-    },
-    closeModal() {
-      this.isVisible = false
+    toggleModal() {
+      this.isVisible = !this.isVisible;
     },
     addContact() {
       this.$store.commit('ADD_CONTACT', this.contact)
@@ -92,7 +91,7 @@ export default {
             <button
                 class="btn add-contact px-0 d-flex align-items-center mx-auto"
                 type="button"
-                @click="openModal"
+                @click="toggleModal"
                 data-bs-toggle="modal"
                 data-bs-target="#addContact"
             >
@@ -105,75 +104,59 @@ export default {
             </button>
 
             <!-- Modal -->
-            <div class="modal fade" :class="{ 'show d-block': isVisible }" id="addContact" tabindex="-1"
-                 aria-labelledby="addContactLabel" aria-hidden="true">
-              <div class="modal-dialog modal-sm modal-dialog-centered">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title text-center text-primary" id="addContactLabel">Add Contact</h5>
-                    <button type="button" class="btn-close" @click="closeModal" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
-                  </div>
-
-                  <div class="modal-body">
-                    <!-- Contact name -->
-                    <div class="mb-3">
-                      <BaseInput class="form-control"
-                                 name="contact-name"
-                                 label="Name"
-                                 required
-                                 :modelValue="contact.name"
-                                 @input="(event) => contact.name = event.target.value"
-                                 :invalid="v$.contact.name.$error"
-                      />
-                      <!-- Display errors -->
-                      <template v-if="v$.contact.name.$error">
-                        <template
-                            v-for="(error, index) of v$.contact.name.$errors"
-                            :key="index"
-                        >
-                          <p>{{ error.$message }}</p>
-                        </template>
-                      </template>
-                    </div>
-
-                    <!-- Contact Phone number -->
-                    <div class="mb-3">
-                      <BaseInput class="form-control"
-                                 name="contact-phone-number"
-                                 label="Phone number"
-                                 required
-                                 :modelValue="contact.phoneNumber"
-                                 @input="(event) => contact.phoneNumber = event.target.value"
-                                 :invalid="v$.contact.phoneNumber.$error"
-                      />
-                      <!-- Display errors -->
-                      <template v-if="v$.contact.phoneNumber.$error">
-                        <template
-                            v-for="(error, index) of v$.contact.phoneNumber.$errors"
-                            :key="index"
-                        >
-                          <p>{{ error.$message }}</p>
-                        </template>
-                      </template>
-                    </div>
-
-
-                    <div class="text-center">
-                      <BaseButton type="button" class="btn-primary mt-4 py-2 w-75 text-white shadow-sm text-center"
-                                  label="Add"
-                                  @click="addContact"
-                      />
-                    </div>
-                  </div>
-
-                </div>
+            <base-modal @close="toggleModal" :modalActive="isVisible">
+              <h4 class="text-center text-primary mb-3">Add Contact</h4>
+              <!-- Contact name -->
+              <div class="mb-3">
+                <BaseInput class="form-control"
+                           name="contact-name"
+                           label="Name"
+                           required
+                           :modelValue="contact.name"
+                           @input="(event) => contact.name = event.target.value"
+                           :invalid="v$.contact.name.$error"
+                />
+                <!-- Display errors -->
+                <template v-if="v$.contact.name.$error">
+                  <template
+                      v-for="(error, index) of v$.contact.name.$errors"
+                      :key="index"
+                  >
+                    <p>{{ error.$message }}</p>
+                  </template>
+                </template>
               </div>
-            </div>
 
-            <Teleport to="body">
-              <div v-show="isVisible" class="modal-backdrop fade show"></div>
-            </Teleport>
+              <!-- Contact Phone number -->
+              <div class="mb-3">
+                <BaseInput class="form-control"
+                           name="contact-phone-number"
+                           label="Phone number"
+                           required
+                           :modelValue="contact.phoneNumber"
+                           @input="(event) => contact.phoneNumber = event.target.value"
+                           :invalid="v$.contact.phoneNumber.$error"
+                />
+                <!-- Display errors -->
+                <template v-if="v$.contact.phoneNumber.$error">
+                  <template
+                      v-for="(error, index) of v$.contact.phoneNumber.$errors"
+                      :key="index"
+                  >
+                    <p>{{ error.$message }}</p>
+                  </template>
+                </template>
+              </div>
+
+
+              <div class="text-center">
+                <BaseButton type="button" class="btn-primary mt-4 py-2 w-75 text-white shadow-sm text-center"
+                            label="Add"
+                            @click="addContact"
+                />
+              </div>
+            </base-modal>
+
 
             <div class="text-center">
               <BaseButton
