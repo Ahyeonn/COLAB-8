@@ -83,5 +83,9 @@ img {
   aspect-ratio : 1/1;
   width        : 42px;
   height       : 42px;
+  @include mq('lg') {
+    position: absolute;
+    right: em(15px);
+    }
   }
 </style>
