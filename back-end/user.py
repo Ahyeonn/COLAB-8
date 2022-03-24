@@ -23,7 +23,7 @@ def bad_request(e):
 @user.route('/events', methods=['GET'])
 def dashboard_index():
     try:
-        user = users.find_one({'phone_number': current_number})
+        user = users.find_one({'phone_number': session['current_user']['phone_number']})
     except:
         user = users.find_one({'phone_number': request.json['phoneNumber']})
 
@@ -42,29 +42,6 @@ def dashboard_index():
         return jsonify([{ 'events' : user_events }]), 200
     else:
         return jsonify({'message' : 'No events'})
-
-# @user.route('dashboard/<event_id>', methods=['GET'])
-# def dashboard_detail(event_id):
-#     event = events.find_one({'_id': event_id})
-#     event_rsvps = rsvps.find({'event_id': event_id})
-
-#     return render_template('events_show.html', event=event, rsvps=event_rsvps)
-
-#     if 'current_user' in session:
-#         user = users.find_one({'phone_number': session['current_user']['phone_number']})
-#         user_events = [e for e in events.find({'owner_id': user['_id']})]
-#         # event_detail = [e for e in events.find_one({'event_id': user_events['_id']})]
-#         print(event_detail)
-
-#         # event_detail = user_events.find_one({'_id': event_id})
-#         # print(event_detail)
-
-#         if user_events:
-#             return jsonify([{ 'event_name' : user_events[0]['event_name'], 'host_name' : user_events[0]['name'], 'date' : user_events[0]['date'], 'time' : user_events[0]['time'], 'recipients' : user_events[0]['recipients'] }]), 200
-#         else:
-#             return jsonify({'message' : 'No events'})
-    
-#     return jsonify({'message' : 'Please sign in'})
 
 # User
 @user.route('/signup', methods=['GET', 'POST']) # Sign up Page
@@ -101,8 +78,10 @@ def signin():
     user = users.find_one({'phone_number': phone_number})
     if user:
         if bcrypt.hashpw(request.json['password'].encode('utf-8'), user['password']) == user['password']:
-            global current_number
-            current_number = user['phone_number']
+            del user['password']
+            session['current_user']=user
+            # global current_number
+            # current_number = user['phone_number']
             return jsonify([{'name' : user['name'], 'phone_number': user['phone_number']}]), 200
     
     abort(400, description='Invalid email/password combination')
