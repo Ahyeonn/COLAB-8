@@ -29,7 +29,7 @@ def create_event():
       'owner_id':   request.json['owner_id'] or None,
       'name':       request.json['name'],
       'event_name': request.json['event_name'],
-      'host_phone': request.json['host_number'],
+      'host_number': request.json['host_number'],
       'date':       request.json['date'],
       'time':       request.json['time'],
       'recipients': []
@@ -62,12 +62,6 @@ def send_users_rsvp():
     recipients = request.json['contacts']
     event_id = request.json['contacts']['event_id']
     for recipient in recipients:
-        new_recipient = {
-            'name': recipient['name'],
-            'phone_number': recipient['phoneNumber']
-        }
-        events.update_one({'_id': event_id}, {'$push':{'recipients': new_recipient}})
-
-    # event = events.find_one({'_id': event_id}) If he wants the event back or ok result
+        create_rsvp(recipient, event_id)
     
     return jsonify({'message' : 'Recipients have been added.'}), 200
