@@ -20,11 +20,57 @@ def bad_request(e):
 # def not_found(e):
 #     return jsonify(error=str(e)), 404
 
+@user.route('/dashboard', methods=['GET'])
+def dashboard_index():
+    if 'current_user' in session:
+        user = users.find_one({'phone_number': session['current_user']['phone_number']})
+        user_events = [e for e in events.find({'owner_id': user['_id']})]
+
+        if user_events:
+            display_events = []
+            for event in user_events:
+                event_detail = {
+                    'num_of_recipients': len(event['recipients']),
+                    'event_name' : (event['event_name']),
+                    'event_id' : (event['_id'])
+                }
+                display_events.append(event_detail)
+
+            return jsonify([{ 'events' : display_events }]), 200
+        else:
+            return jsonify({'message' : 'No events'})
+
+    return jsonify({'message' : 'Please sign in'})
+
+# @user.route('dashboard/<event_id>', methods=['GET'])
+# def dashboard_detail(event_id):
+#     event = events.find_one({'_id': event_id})
+#     event_rsvps = rsvps.find({'event_id': event_id})
+
+#     return render_template('events_show.html', event=event, rsvps=event_rsvps)
+
+#     if 'current_user' in session:
+#         user = users.find_one({'phone_number': session['current_user']['phone_number']})
+#         user_events = [e for e in events.find({'owner_id': user['_id']})]
+#         # event_detail = [e for e in events.find_one({'event_id': user_events['_id']})]
+#         print(event_detail)
+
+#         # event_detail = user_events.find_one({'_id': event_id})
+#         # print(event_detail)
+
+#         if user_events:
+#             return jsonify([{ 'event_name' : user_events[0]['event_name'], 'host_name' : user_events[0]['name'], 'date' : user_events[0]['date'], 'time' : user_events[0]['time'], 'recipients' : user_events[0]['recipients'] }]), 200
+#         else:
+#             return jsonify({'message' : 'No events'})
+    
+#     return jsonify({'message' : 'Please sign in'})
+
 # User
-@user.route('/signup', methods=['POST']) # Sign up Page
+@user.route('/signup', methods=['GET', 'POST']) # Sign up Page
 def signup():
     if 'current_user' in session:
         abort(403, description='You already signed in')
+    if request.method == 'GET': return jsonify({'message' : 'Please sign up'})
 
     name = request.json['name']
     phone_number = request.json['phone_number']
@@ -49,21 +95,23 @@ def signup():
     else:
         abort(403, description='Type the correct number')
 
-@user.route('/signin', methods=['POST'])
+@user.route('/signin', methods=['POST', 'GET'])
 def signin():
     if 'current_user' in session:
-        return jsonify({'Error' : 'You already signed in'}), 203
+        return jsonify({'message' : 'You already signed in'}), 203
+    if request.method == 'GET': return jsonify({'message' : 'Please sign in'})
 # Maybe status 404
     phone_number = request.json['phone_number']
     user = users.find_one({'phone_number' : phone_number})
     if user:
         if bcrypt.hashpw(request.json['password'].encode('utf-8'), user['password']) == user['password']:
+            del user['password']
             session['current_user'] = user
             return jsonify([{'name' : user['name'], 'phone_number': user['phone_number']}]), 200
     
     abort(400, description='Invalid email/password combination')
 
-@user.route('/logout', methods=['POST'])
+@user.route('/logout', methods=['POST', 'GET'])
 def logout():
     if 'current_user' in session:
         session.pop('current_user', None)
@@ -76,12 +124,13 @@ def index():
         all_users.append({'_id': user['_id'], 'name' : user['name'], 'phone_number': user['phone_number']})
     return jsonify({'result' : all_users}), 200
 
+#If signed in
 @user.route('/<user_id>', methods=['GET'])
-def get_one_user(user_id):
+def show_user(user_id):
     user = users.find_one({'_id': user_id})
     if user:
-        del user['password']
-        return jsonify({'result': user}), 200
+        user_events = [e for e in events.find({'owner_id': user_id})]
+        return jsonify({'result': user_events}), 200
 
     abort(404, description='User is not found')
 
