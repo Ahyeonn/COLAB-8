@@ -25,8 +25,8 @@ def dashboard_index():
     try:
         user = users.find_one({'phone_number': session['current_user']['phone_number']})
     except:
-        user = users.find_one({'phone_number': request.json['phoneNumber']})
-
+        return jsonify([{ 'message' : 'You have to sign in.' }])
+        
     user_events = [e for e in events.find({'owner_id': user['_id']})]
 
     if user_events:
