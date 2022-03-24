@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, session, abort
+from flask import Blueprint, request, jsonify, session, abort, redirect, url_for
 from bson.objectid import ObjectId
 from extensions import *
 import uuid
@@ -20,16 +20,17 @@ def bad_request(e):
 # def not_found(e):
 #     return jsonify(error=str(e)), 404
 
-@user.route('/events', methods=['GET'])
-def dashboard_index():
+@user.route('/events/<phone_number>', methods=['GET'])
+def dashboard_index(phone_number):
     try:
-        user = users.find_one({'phone_number': session['current_user']['phone_number']})
+        user = users.find_one({'phone_number': phone_number})
     except:
         return jsonify([{ 'message' : 'You have to sign in.' }])
 
     user_events = [e for e in events.find({'owner_id': user['_id']})]
 
     if user_events:
+        print('testing')
         display_events = []
         for event in user_events:
             event_detail = {
@@ -82,7 +83,7 @@ def signin():
             session['current_user']=user
             # global current_number
             # current_number = user['phone_number']
-            return jsonify([{'name' : user['name'], 'phone_number': user['phone_number']}]), 200
+            return redirect(url_for('user.dashboard_index', phone_number=user['phone_number']))
     
     abort(400, description='Invalid phone_number/password combination')
 
