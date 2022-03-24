@@ -1,18 +1,52 @@
 <script>
 import BaseButton from "@/components/UI/BaseButton";
+import BaseModal from "@/components/BaseModal";
+
 import {mapGetters} from 'vuex'
 
 export default {
   name: "MeetingConfirmation",
-  components: {BaseButton},
+  data() {
+    return {
+      isVisible: false,
+      error: '',
+      anyErrors: false,
+    }
+  },
+  components: {
+    BaseButton,
+    BaseModal
+  },
   computed: {
     ...mapGetters(['getContacts', 'getMeeting'])
   },
+  methods:  {
+    toggleModal() {
+      this.isVisible = !this.isVisible;
+    },
+    async sendHeadsUp() {
+      await this.$store.dispatch('sendRecipients', this.getContacts)
+      this.toggleModal
+    }
+  }
 }
 </script>
 
 <template>
   <div class="row">
+    <base-modal @close="toggleModal" :modalActive="isVisible">
+      <h2 class="text-primary text-center">🚨Wait a minute!🚨</h2>
+      <p>Why don’t you create an account while you’re here? We’ll save your contacts and even keep track your attendees for you!</p>
+      <router-link
+          class="btn btn-primary text-white mt-3 py-2 w-75 mx-auto d-block shadow-sm"
+          to="/sign-up">
+        SignUp
+      </router-link>
+      <p>I’d rather do it all again next time.
+         <a href="#" @click.prevent="toggleModal">Skip</a>
+      </p>
+    </base-modal>
+
     <div class="col-md-6 mx-auto">
       <h3 class="my-4"> 🔍 Take a look and confirm your details blow!</h3>
       <section id="message-preview">
@@ -38,11 +72,14 @@ export default {
               <path fill="none" d="M0 0h24v24H0z" />
               <path d="M20 22H4v-2a5 5 0 0 1 5-5h6a5 5 0 0 1 5 5v2zm-8-9a6 6 0 1 1 0-12 6 6 0 0 1 0 12z" />
             </svg>
-            <span>{{ contacts }}</span>
+            <span>{{ contacts.name }}</span>
           </li>
         </ul>
         <div class="text-center">
-          <BaseButton class="btn-primary mt-4 py-2 w-75 text-white shadow-sm" label="Send HeadsUp!"/>
+          <BaseButton class="btn-primary mt-4 py-2 w-75 text-white shadow-sm"
+                      label="Send HeadsUp!"
+                      @click="sendHeadsUp"
+          />
           <router-link
               class="btn btn-back mt-3 py-2 w-75 mx-auto d-block shadow-sm"
               to="/contact-info"

@@ -69,16 +69,6 @@ export default {
       <div class="card shadow">
         <div class="card-body">
           <form @submit.prevent="onSubmit">
-            <!-- Host phone-number -->
-            <div class="mb-3">
-              <BaseInput
-                  class="form-control"
-                  name="host-phone-number"
-                  label="Your number"
-                  type="tel"
-              />
-            </div>
-
             <!-- contact list -->
             <ul class="list-unstyled contacts">
               <li v-for="(contacts, index) in getContacts" :key="index">
@@ -87,7 +77,7 @@ export default {
                   <path fill="none" d="M0 0h24v24H0z" />
                   <path d="M20 22H4v-2a5 5 0 0 1 5-5h6a5 5 0 0 1 5 5v2zm-8-9a6 6 0 1 1 0-12 6 6 0 0 1 0 12z" />
                 </svg>
-                <span>{{ contacts }}</span>
+                <span>{{ contacts.name }}</span>
               </li>
             </ul>
 

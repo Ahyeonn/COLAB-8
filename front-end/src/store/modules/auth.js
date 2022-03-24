@@ -41,7 +41,8 @@ export default {
                 phone_number: user.phoneNumber,
                 password: user.password,
             })
-                .then(() => {
+                .then((res) => {
+                    console.log(res)
                     context.commit('UPDATE_USER', user);
                     context.commit('LOG_IN', true);
                 })

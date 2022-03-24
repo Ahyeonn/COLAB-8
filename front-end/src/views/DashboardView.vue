@@ -3,6 +3,9 @@ import BaseButton from "@/components/UI/BaseButton";
 export default {
   name: "DashboardView",
   components: {BaseButton},
+  created() {
+    this.$store.dispatch('getEvents');
+  },
   methods: {
     async logout() {
       await this.$store.commit('LOG_IN', 'false');
@@ -16,23 +19,32 @@ export default {
   <h3 class="my-4 text-center">Dashboard</h3>
   <div class="row">
     <div class="col-md-6">
-      <h3>Your Events</h3>
       <BaseButton
-        class="btn-danger text-white"
-        label="Logout"
-        @click="logout"
+          class="btn-danger text-white"
+          label="Logout"
+          @click="logout"
       />
-      <div class="card">
-        <div class="card-body">
-          <p>Dinner</p>
-          <span>1/5 replied</span>
-          <button>Details</button>
+      <h3>Your Events</h3>
+      <div class="row">
+        <div class="col">
+          <div class="card">
+            <div class="card-body">
+              <p>Dinner</p>
+              <span>1/5 replied</span>
+              <BaseButton
+                  class="btn-primary d-block mt-2"
+                  label="Details"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<style scoped>
-
+<style scoped lang="scss">
+.card {
+  max-width : 300px;
+  }
 </style>

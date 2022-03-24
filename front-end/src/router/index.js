@@ -44,6 +44,11 @@ const routes = [
         component: () => import('@/views/MeetingConfirmation.vue')
     },
     {
+        path: '/meeting-created',
+        name: 'MeetingCreated',
+        component: () => import('@/views/MeetingCreated.vue')
+    },
+    {
         path: '/log-in',
         name: 'LogIn',
         component: LogIn

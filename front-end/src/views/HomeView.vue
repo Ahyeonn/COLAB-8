@@ -3,7 +3,10 @@ import BaseInput from "@/components/Form/BaseInput";
 import BaseButton from "@/components/UI/BaseButton";
 
 import useVuelidate from '@vuelidate/core'
-import { required, alpha,minLength, alphaNum } from '@vuelidate/validators'
+import { required, alpha, integer, minLength, alphaNum } from '@vuelidate/validators'
+
+import { v4 as uuidv4 } from 'uuid';
+const uuid = uuidv4().replace(/-/g, '');
 
 export default {
   name: "HomeView",
@@ -15,7 +18,9 @@ export default {
   data() {
     return {
       meeting: {
+        id: uuid,
         hostName: '',
+        hostNumber: '',
         name: '',
         date: '',
         time: '',
@@ -29,6 +34,12 @@ export default {
           required,
           alpha,
           minLength: minLength(3),
+          $autoDirty: true,
+        },
+        hostNumber: {
+          required,
+          integer,
+          minLength: minLength(10),
           $autoDirty: true,
         },
         name: {
@@ -85,6 +96,31 @@ export default {
                 </template>
               </template>
             </div>
+            <!-- Host number -->
+            <div class="mb-3">
+              <BaseInput
+                  class="form-control"
+                  name="host-phone-number"
+                  label="Your number"
+                  type="tel"
+                  required
+                  :modelValue="meeting.hostNumber"
+                  @input="(event) => meeting.hostNumber = event.target.value"
+                  :invalid="v$.meeting.hostNumber.$error"
+              />
+              <!-- Display errors -->
+              <template v-if="v$.meeting.hostNumber.$error">
+                <template
+                    v-for="(error, index) of v$.meeting.hostNumber.$errors"
+                    :key="index"
+                >
+                  <p>{{ error.$message }}</p>
+                </template>
+              </template>
+
+            </div>
+
+
             <!-- Meeting name -->
             <div class="mb-3">
               <BaseInput
