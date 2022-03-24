@@ -26,7 +26,7 @@ def dashboard_index():
         user = users.find_one({'phone_number': session['current_user']['phone_number']})
     except:
         return jsonify([{ 'message' : 'You have to sign in.' }])
-        
+
     user_events = [e for e in events.find({'owner_id': user['_id']})]
 
     if user_events:
@@ -84,7 +84,7 @@ def signin():
             # current_number = user['phone_number']
             return jsonify([{'name' : user['name'], 'phone_number': user['phone_number']}]), 200
     
-    abort(400, description='Invalid email/password combination')
+    abort(400, description='Invalid phone_number/password combination')
 
 @user.route('/logout', methods=['POST', 'GET'])
 def logout():
