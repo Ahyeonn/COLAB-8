@@ -22,7 +22,7 @@ def bad_request(e):
 
 @user.route('/dashboard', methods=['GET'])
 def dashboard_index():
-    user = users.find_one({'phone_number': session['current_user']['phone_number']})
+    user = users.find_one({'phone_number': request.json['phone_number']})
     user_events = [e for e in events.find({'owner_id': user['_id']})]
 
     if user_events:
@@ -35,7 +35,7 @@ def dashboard_index():
             }
             display_events.append(event_detail)
 
-        return jsonify([{ 'events' : display_events }]), 200
+        return jsonify([{ 'events' : user_events }]), 200
     else:
         return jsonify({'message' : 'No events'})
 
@@ -65,8 +65,6 @@ def dashboard_index():
 # User
 @user.route('/signup', methods=['GET', 'POST']) # Sign up Page
 def signup():
-    if 'current_user' in session:
-        abort(403, description='You already signed in')
     if request.method == 'GET': return jsonify({'message' : 'Please sign up'})
 
     name = request.json['name']
@@ -87,23 +85,18 @@ def signup():
         }).inserted_id
 
         new_user = users.find_one({'_id': user_id})
-        session['current_user'] = new_user
         return jsonify([{'name' : new_user['name'], 'phone_number': new_user['phone_number']}]), 201
     else:
         abort(403, description='Type the correct number')
 
 @user.route('/signin', methods=['POST', 'GET'])
 def signin():
-    if 'current_user' in session:
-        return jsonify({'message' : 'You already signed in'}), 203
     if request.method == 'GET': return jsonify({'message' : 'Please sign in'})
 # Maybe status 404
     phone_number = request.json['phone_number']
-    user = users.find_one({'phone_number' : phone_number})
+    user = users.find_one({'phone_number': phone_number})
     if user:
         if bcrypt.hashpw(request.json['password'].encode('utf-8'), user['password']) == user['password']:
-            del user['password']
-            session['current_user'] = user
             return jsonify([{'name' : user['name'], 'phone_number': user['phone_number']}]), 200
     
     abort(400, description='Invalid email/password combination')

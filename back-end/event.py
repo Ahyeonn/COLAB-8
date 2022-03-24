@@ -1,6 +1,6 @@
-from flask import Blueprint, request, jsonify, abort, session
+from flask import Blueprint, request, jsonify, abort
 from bson.objectid import ObjectId
-# from twilio_api import create_rsvp
+from twilio_api import create_rsvp
 from extensions import *
 import uuid
 from utils import validate_number
@@ -24,24 +24,18 @@ def index():
 
 @event.route('/create', methods=['POST'])
 def create_event():
-    event_id = request.json['event_id']
-    owner_id = session['current_user']['_id'] if 'current_user' in session else None
-    owner_name = request.json['name']
-    event_name = request.json['event_name']
-    # host_phone = request.json['host_phone']
-    # recipients = request.json['recipients']
-    # recipients = []
-    date = request.json['date']
-    time = request.json['time']
-    # contacts = {}
+    new_event = {
+      '_id':        request.json['event_id'],
+      'owner_id':   request.json['owner_id'] or None,
+      'name':       request.json['name'],
+      'event_name': request.json['event_name'],
+      'host_phone': request.json['host_number'],
+      'date':       request.json['date'],
+      'time':       request.json['time'],
+      'recipients': []
+    }
 
-    # for name, phone_number in recipients.items():
-        # if validate_number(phone_number):
-        #     contacts[name] = phone_number
-
-#     event_id = events.insert_one({'_id': uuid.uuid4().hex, 'owner_id': owner_id, 'name': owner_name, 'event_name': event_name, 'date': date, 'recipients': contacts, 'time': time}).inserted_id
-
-    event_id = events.insert_one({'_id': event_id, 'owner_id': owner_id, 'name': owner_name, 'event_name': event_name, 'date': date, 'time': time}).inserted_id
+    event_id = events.insert_one(new_event).inserted_id
     new_event = events.find_one({'_id' : event_id})
     return jsonify(new_event), 200
 
@@ -58,24 +52,22 @@ def get_events_by_user(user_id):
 @event.route('/<event_id>', methods=['GET'])
 def show_event(event_id):
     event = events.find_one({'_id': event_id})
+    event_rsvps = rsvps.find({'event_id': event_id})
     if event:
-        return jsonify({'event result' : event}), 200
-
+        return jsonify({'event result' : [event, rsvps]}), 200
     abort(404, description='not found')
 
 @event.route('/rsvp', methods=['POST'])
 def send_users_rsvp():
-    recipients = request.json['meetingMembers']['contacts']
-    event_id = request.json['meetingMembers']['event_id']
+    recipients = request.json['contacts']
+    event_id = request.json['contacts']['event_id']
     for recipient in recipients:
         new_recipient = {
             'name': recipient['name'],
             'phone_number': recipient['phoneNumber']
         }
-        if validate_number(new_recipient['phone_number']):
-            events.update_one({'_id': event_id}, {'$push':{'recipients': new_recipient}})
-        else:
-            abort(400, description='Type the correct number')
+        events.update_one({'_id': event_id}, {'$push':{'recipients': new_recipient}})
+
     # event = events.find_one({'_id': event_id}) If he wants the event back or ok result
     
     return jsonify({'message' : 'Recipients have been added.'}), 200
