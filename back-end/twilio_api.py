@@ -15,7 +15,7 @@ twilio_phone_number = os.getenv('TWILIO_PHONE_NUMBER')
 client = Client(account_sid, auth_token)
 
 def create_rsvp(recipient, event_id):
-    phone_number = recipient['number']
+    phone_number = recipient['phoneNumber']
     if validate_number(phone_number):
         new_rsvp = {
             '_id': uuid.uuid4().hex,
@@ -35,5 +35,5 @@ def create_rsvp(recipient, event_id):
         client.messages.create(
             to=f'{phone_number}',
             from_=f'{twilio_phone_number}',
-            body=f'https://instavents.herokuapp.com/evnts/rsvp/{rsvp_id}'
+            body=f'https://127.0.0.1:5000/events/rsvp/{rsvp_id}'
         )
