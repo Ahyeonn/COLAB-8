@@ -20,9 +20,9 @@ def bad_request(e):
 # def not_found(e):
 #     return jsonify(error=str(e)), 404
 
-@user.route('/dashboard', methods=['GET'])
+@user.route('/events', methods=['GET'])
 def dashboard_index():
-    user = users.find_one({'phone_number': request.json['phone_number']})
+    user = users.find_one({'phone_number': request.json['phoneNumber']})
     user_events = [e for e in events.find({'owner_id': user['_id']})]
 
     if user_events:
