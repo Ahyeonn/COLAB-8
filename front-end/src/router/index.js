@@ -1,10 +1,20 @@
 import {createRouter, createWebHistory} from 'vue-router'
+import store from '@/store/index'
 import HomeView from '@/views/HomeView'
 import DashboardView from "@/views/DashboardView";
 import ContactInfo from "@/views/ContactInfo";
 import LogIn from "@/views/auth/LogIn";
 import SignUp from "@/views/auth/SignUp";
 import NotFound from '@/views/NotFound.vue';
+
+
+function authGuard(to, from, next) {
+    if (!store.state.auth.isLoggedIn || store.state.auth.isLoggedIn === 'false') {
+        next({name: 'LogIn'})
+    } else {
+        next()
+    }
+}
 
 const routes = [
     {
@@ -15,7 +25,8 @@ const routes = [
     {
         path: '/dashboard',
         name: 'dashboard',
-        component: DashboardView
+        component: DashboardView,
+        beforeEnter: authGuard
     },
     {
         path: '/how-it-works',

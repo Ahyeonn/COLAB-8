@@ -3,7 +3,7 @@ import axios from "axios";
 export default {
     state() {
         return {
-            isLoggedIn: false,
+            isLoggedIn: localStorage.getItem('is-loggedIn'),
             user: {
                 name: '',
                 phoneNumber: '',
@@ -15,6 +15,10 @@ export default {
         UPDATE_USER(state, payload) {
             state.user = Object.assign({}, state.user, payload);
         },
+        LOG_IN(state, value) {
+            state.isLoggedIn = value;
+            localStorage.setItem('is-loggedIn', value);
+        }
     },
     actions: {
         async register(context, user) {
@@ -39,6 +43,7 @@ export default {
             })
                 .then(() => {
                     context.commit('UPDATE_USER', user);
+                    context.commit('LOG_IN', true);
                 })
                 .catch(error => {
                     throw error.response.data.error

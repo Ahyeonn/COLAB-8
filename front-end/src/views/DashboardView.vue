@@ -1,6 +1,14 @@
 <script>
+import BaseButton from "@/components/UI/BaseButton";
 export default {
-  name: "DashboardView"
+  name: "DashboardView",
+  components: {BaseButton},
+  methods: {
+    async logout() {
+      await this.$store.commit('LOG_IN', 'false');
+      await this.$router.push({ path : '/log-in' });
+    }
+  }
 }
 </script>
 
@@ -9,6 +17,11 @@ export default {
   <div class="row">
     <div class="col-md-6">
       <h3>Your Events</h3>
+      <BaseButton
+        class="btn-danger text-white"
+        label="Logout"
+        @click="logout"
+      />
       <div class="card">
         <div class="card-body">
           <p>Dinner</p>
