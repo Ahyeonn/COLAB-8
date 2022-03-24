@@ -30,7 +30,6 @@ def dashboard_index(phone_number):
     user_events = [e for e in events.find({'owner_id': user['_id']})]
 
     if user_events:
-        print('testing')
         display_events = []
         for event in user_events:
             event_detail = {
@@ -40,7 +39,7 @@ def dashboard_index(phone_number):
             }
             display_events.append(event_detail)
 
-        return jsonify([{ 'events' : user_events }]), 200
+        return jsonify([{ 'events' : display_events }]), 200
     else:
         return jsonify({'message' : 'No events'})
 
