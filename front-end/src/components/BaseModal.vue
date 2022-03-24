@@ -1,6 +1,7 @@
 <script>
 export default {
   props: ["modalActive"],
+  emits: ["close"],
   setup(props, { emit }) {
     const close = () => {
       emit("close");

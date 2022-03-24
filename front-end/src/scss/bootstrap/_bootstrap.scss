@@ -17,6 +17,9 @@ $modal-content-border-color: transparent;
 $modal-backdrop-bg:                 $black;
 $modal-backdrop-opacity:            .5;
 
+// Toast
+$toast-background-color: rgba(235, 41, 41, 0.85);
+
 // Required
 @import '../../../node_modules/bootstrap/scss/functions';
 @import '../../../node_modules/bootstrap/scss/variables';
@@ -45,8 +48,8 @@ $modal-backdrop-opacity:            .5;
  @import "bootstrap/scss/alert";
 // @import "bootstrap/scss/progress";
 @import "bootstrap/scss/list-group";
- @import 'bootstrap/scss/close';
-// @import "bootstrap/scss/toasts";
+@import 'bootstrap/scss/close';
+@import "bootstrap/scss/toasts";
 @import '../../../node_modules/bootstrap/scss/modal'; // Requires transitions
 // @import "bootstrap/scss/tooltip";
 // @import "bootstrap/scss/popover";
