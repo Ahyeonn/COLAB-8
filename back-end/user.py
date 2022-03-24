@@ -22,7 +22,11 @@ def bad_request(e):
 
 @user.route('/events', methods=['GET'])
 def dashboard_index():
-    user = users.find_one({'phone_number': request.json['phoneNumber']})
+    try:
+        user = users.find_one({'phone_number': current_number})
+    except:
+        user = users.find_one({'phone_number': request.json['phoneNumber']})
+
     user_events = [e for e in events.find({'owner_id': user['_id']})]
 
     if user_events:
@@ -97,6 +101,8 @@ def signin():
     user = users.find_one({'phone_number': phone_number})
     if user:
         if bcrypt.hashpw(request.json['password'].encode('utf-8'), user['password']) == user['password']:
+            global current_number
+            current_number = user['phone_number']
             return jsonify([{'name' : user['name'], 'phone_number': user['phone_number']}]), 200
     
     abort(400, description='Invalid email/password combination')
