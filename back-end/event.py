@@ -3,6 +3,7 @@ from bson.objectid import ObjectId
 # from twilio_api import create_rsvp
 from extensions import *
 import uuid
+from utils import validate_number
 
 event = Blueprint("event", __name__)
 
@@ -23,12 +24,13 @@ def index():
 
 @event.route('/create', methods=['POST'])
 def create_event():
-    owner_id = request.json['owner_id'] or None
+    event_id = request.json['event_id']
+    owner_id = session['current_user']['_id'] if 'current_user' in session else None
     owner_name = request.json['name']
     event_name = request.json['event_name']
     # host_phone = request.json['host_phone']
     # recipients = request.json['recipients']
-    recipients = []
+    # recipients = []
     date = request.json['date']
     time = request.json['time']
     # contacts = {}
@@ -39,7 +41,7 @@ def create_event():
 
 #     event_id = events.insert_one({'_id': uuid.uuid4().hex, 'owner_id': owner_id, 'name': owner_name, 'event_name': event_name, 'date': date, 'recipients': contacts, 'time': time}).inserted_id
 
-    event_id = events.insert_one({'_id': uuid.uuid4().hex, 'owner_id': owner_id, 'name': owner_name, 'event_name': event_name, 'date': date, 'time': time}).inserted_id
+    event_id = events.insert_one({'_id': event_id, 'owner_id': owner_id, 'name': owner_name, 'event_name': event_name, 'date': date, 'time': time}).inserted_id
     new_event = events.find_one({'_id' : event_id})
     return jsonify(new_event), 200
 
