@@ -63,10 +63,10 @@ def show_event(event_id):
 
     abort(404, description='not found')
 
-@event.route('/add_user', methods=['POST'])
-def add_user_event():
+@event.route('/rsvp', methods=['POST'])
+def send_users_rsvp():
     recipients = request.json['meetingMembers']['contacts']
-    event_id = request.json['meetingMembers']['eventId']
+    event_id = request.json['meetingMembers']['event_id']
     for recipient in recipients:
         new_recipient = {
             'name': recipient['name'],

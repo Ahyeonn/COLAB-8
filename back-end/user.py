@@ -22,25 +22,22 @@ def bad_request(e):
 
 @user.route('/dashboard', methods=['GET'])
 def dashboard_index():
-    if 'current_user' in session:
-        user = users.find_one({'phone_number': session['current_user']['phone_number']})
-        user_events = [e for e in events.find({'owner_id': user['_id']})]
+    user = users.find_one({'phone_number': session['current_user']['phone_number']})
+    user_events = [e for e in events.find({'owner_id': user['_id']})]
 
-        if user_events:
-            display_events = []
-            for event in user_events:
-                event_detail = {
-                    'num_of_recipients': len(event['recipients']),
-                    'event_name' : (event['event_name']),
-                    'event_id' : (event['_id'])
-                }
-                display_events.append(event_detail)
+    if user_events:
+        display_events = []
+        for event in user_events:
+            event_detail = {
+                'num_of_recipients': len(event['recipients']),
+                'event_name' : (event['event_name']),
+                'event_id' : (event['_id'])
+            }
+            display_events.append(event_detail)
 
-            return jsonify([{ 'events' : display_events }]), 200
-        else:
-            return jsonify({'message' : 'No events'})
-
-    return jsonify({'message' : 'Please sign in'})
+        return jsonify([{ 'events' : display_events }]), 200
+    else:
+        return jsonify({'message' : 'No events'})
 
 # @user.route('dashboard/<event_id>', methods=['GET'])
 # def dashboard_detail(event_id):
