@@ -14,6 +14,9 @@ export default {
     async logout() {
       await this.$store.commit('LOG_IN', 'false');
       await this.$router.push({path: '/log-in'});
+    },
+    detail(id) {
+      this.$router.push({path: `/dashboard/events/${id}`});
     }
   }
 }
@@ -36,8 +39,9 @@ export default {
         <div class="card-body">
           <p>{{ event.event_name }}</p>
           <BaseButton
-              class="btn-primary d-block mt-2"
+              class="btn-primary d-block mt-2 d-block mx-auto"
               label="Details"
+              @click.prevent="detail(event.event_id)"
           />
         </div>
       </div>

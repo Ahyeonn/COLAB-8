@@ -24,7 +24,7 @@ export default {
   <h3 class="my-4">Event Details</h3>
   <div class="card">
     <div class="card-body">
-      <h5 class="card-title">{{getEvent['event result']}}</h5>
+      <h5 class="card-title"></h5>
       <p>{{getEvent['event result'].created_on}}</p>
       <!-- contact list -->
       <ul class="list-unstyled contacts">
@@ -36,7 +36,7 @@ export default {
             <path fill="none" d="M0 0h24v24H0z" />
             <path d="M20 22H4v-2a5 5 0 0 1 5-5h6a5 5 0 0 1 5 5v2zm-8-9a6 6 0 1 1 0-12 6 6 0 0 1 0 12z" />
           </svg>
-          <span>{{ rsvp[0] }}</span> <span>{{ rsvp[1] }}</span>
+          <span>{{ rsvp[0] }}</span>
         </li>
       </ul>
       <BaseButton label="refresh"

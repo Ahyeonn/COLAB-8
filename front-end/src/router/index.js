@@ -36,7 +36,7 @@ const routes = [
         beforeEnter: authGuard
     },
     {
-        path: '/events/:id',
+        path: '/dashboard/events/:id',
         name: 'MeetingDetails',
         component: MeetingDetails
     },
