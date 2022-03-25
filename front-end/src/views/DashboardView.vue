@@ -8,6 +8,9 @@ export default {
   computed: {
     getEvents() {
       return this.$store.state.dashboard.events
+    },
+    getLoggedInUser() {
+      return this.$store.state.auth.authenticatedUser
     }
   },
   methods: {
@@ -23,12 +26,10 @@ export default {
 </script>
 
 <template>
-  <h3 class="my-4 text-center">👋 Welcome back Jane!</h3>
-      <BaseButton
-          class="btn-danger text-white"
-          label="Logout"
-          @click="logout"
-      />
+  <h3 class="my-4 text-center">
+    👋 Welcome back
+    <span class=" text-capitalize">{{ getLoggedInUser.user_name }}!</span>
+  </h3>
       <h3 class="my-3">Your Events</h3>
   <div class="row">
     <div class="col-md-6 mx-auto" v-if="!getEvents">
@@ -39,7 +40,7 @@ export default {
         <div class="card-body">
           <p>{{ event.event_name }}</p>
           <BaseButton
-              class="btn-primary d-block mt-2 d-block mx-auto"
+              class="btn-primary shadow-sm d-block mt-2 d-block mx-auto"
               label="Details"
               @click.prevent="detail(event.event_id)"
           />
@@ -47,6 +48,11 @@ export default {
       </div>
     </div>
   </div>
+  <BaseButton
+      class="btn-danger d-block text-white shadow-sm mt-5"
+      label="Logout"
+      @click="logout"
+  />
 </template>
 
 <style scoped lang="scss">

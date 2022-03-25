@@ -8,7 +8,8 @@ export default {
                 name: '',
                 phoneNumber: '',
                 password: ''
-            }
+            },
+            authenticatedUser: {}
         }
     },
     mutations: {
@@ -19,6 +20,9 @@ export default {
             state.isLoggedIn = value;
             localStorage.setItem('is-loggedIn', value);
         },
+        SET_AUTHENTICATED_USER(state, payload) {
+            state.authenticatedUser = payload
+        }
         // ADD_EVENT(state, event) {
         //     state.events.push(event)
         // },
@@ -45,10 +49,11 @@ export default {
                 password: user.password,
             })
                 .then((res) => {
-                    console.log(res.data[0].events)
+                    console.log(res.data[2])
                     context.commit('UPDATE_USER', user);
                     context.commit('LOG_IN', true);
                     context.commit(`ADD_EVENT`, res.data[0].events)
+                    context.commit('SET_AUTHENTICATED_USER', res.data[2])
                 })
                 .catch(error => {
                     console.log(error)
