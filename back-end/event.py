@@ -51,8 +51,15 @@ def get_events_by_user(user_id):
 @event.route('/<event_id>', methods=['GET'])
 def show_event(event_id):
     event = events.find_one({'_id': event_id})
+    event_rsvps = rsvps.find({'event_id': event_id})
+    rsvp_list = []
+    for event in event_rsvps:
+        update_status = 'Attending' if event['status'] == True else ('Pending' if event['status'] == None else 'Denied')
+        rsvp_list.append([event['recipient_name'], update_status])
+    
+
     if event:
-        return jsonify({'event result' : event}), 200
+        return jsonify({'event result': event, 'rsvp_list': rsvp_list })
     abort(404, description='not found')
 
 @event.route('/rsvp', methods=['POST'])
