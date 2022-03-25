@@ -29,13 +29,13 @@ def dashboard_index(phone_number):
         display_events = []
         for event in user_events:
             event_detail = {
-                'num_of_recipients': len(event['recipients']),
+                # 'num_of_recipients': x,
                 'event_name' : (event['event_name']),
                 'event_id' : (event['_id'])
             }
             display_events.append(event_detail)
 
-        return jsonify([{ 'events' : display_events }]), 200
+        return jsonify({ 'events' : display_events }, { 'user_id' : user['_id'] }, { 'user_name' : user['name']} ), 200
     else:
         return jsonify({'message' : 'No events'})
 
@@ -73,11 +73,10 @@ def signin():
     phone_number = request.json['phone_number']
     user = users.find_one({'phone_number': phone_number})
     if user:
-        print(user)
         if bcrypt.hashpw(request.json['password'].encode('utf-8'), user['password']) == user['password']:
             del user['password']
             session['current_user']=user
-            return redirect(url_for('user.dashboard_index', phone_number=user['phone_number']))
+            return redirect(url_for('user.dashboard_index', phone_number=user['phone_number'], user_id=user['_id'], name=user['name']))
     
     abort(400, description='Invalid phone_number/password combination')
 
