@@ -7,6 +7,7 @@ import LogIn from "@/views/auth/LogIn";
 import SignUp from "@/views/auth/SignUp";
 import NotFound from '@/views/NotFound.vue';
 import MeetingRespond from "@/views/MeetingRespond";
+import MeetingDetails from "@/views/MeetingDetails";
 
 
 function authGuard(to, from, next) {
@@ -33,6 +34,11 @@ const routes = [
         name: 'dashboard',
         component: DashboardView,
         beforeEnter: authGuard
+    },
+    {
+        path: '/events/:id',
+        name: 'MeetingDetails',
+        component: MeetingDetails
     },
     {
         path: '/how-it-works',

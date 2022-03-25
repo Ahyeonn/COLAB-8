@@ -20,7 +20,7 @@ export default {
 </script>
 
 <template>
-  <h3 class="my-4 text-center">Dashboard</h3>
+  <h3 class="my-4 text-center">👋 Welcome back Jane!</h3>
       <BaseButton
           class="btn-danger text-white"
           label="Logout"
@@ -35,7 +35,6 @@ export default {
       <div class="card text-center">
         <div class="card-body">
           <p>{{ event.event_name }}</p>
-          <span>{{ event.num_of_recipients }} members</span>
           <BaseButton
               class="btn-primary d-block mt-2"
               label="Details"
