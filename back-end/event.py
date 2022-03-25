@@ -79,4 +79,4 @@ def event_response(rsvp_id):
 
     rsvps.update_one({'_id': rsvp_id}, {'$set':{'status': response}})
 
-    return jsonify({'message' : 'Thank you for your response! You may close this page'})
+    return jsonify({'event_name' : event['event_name'], 'host_name' : event['name']})

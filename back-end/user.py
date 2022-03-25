@@ -77,6 +77,7 @@ def signin():
     phone_number = request.json['phone_number']
     user = users.find_one({'phone_number': phone_number})
     if user:
+        print(user)
         if bcrypt.hashpw(request.json['password'].encode('utf-8'), user['password']) == user['password']:
             del user['password']
             session['current_user']=user
