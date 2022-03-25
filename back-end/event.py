@@ -66,12 +66,14 @@ def send_users_rsvp():
     return jsonify({'message' : 'Recipients have been added.'}), 200
 
 # Ask for yes / no response
-@event.route('/rsvp/<rsvp_id>', methods=['POST'])
+@event.route('/rsvp/<rsvp_id>', methods=['GET','POST'])
 def event_response(rsvp_id):
     rsvp = rsvps.find_one({'_id': rsvp_id})
 
     if not rsvp:
         return jsonify({'message' : 'Invitation is expired or invalid.'})
+    
+    if request.method == 'GET': return jsonify({'message' : 'Please let us know!'})
 
     event = events.find_one({'_id': rsvp['event_id']})
 
@@ -79,4 +81,4 @@ def event_response(rsvp_id):
 
     rsvps.update_one({'_id': rsvp_id}, {'$set':{'status': response}})
 
-    return jsonify({'event_name' : event['event_name'], 'host_name' : event['name']})
+    return jsonify({'event_name' : event['event_name'], 'host_name' : event['name'], 'rsvp_id' : rsvp })
