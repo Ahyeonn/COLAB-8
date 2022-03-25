@@ -1,4 +1,4 @@
-import axios from "axios";
+// import axios from "axios";
 
 export default {
     state() {
@@ -12,12 +12,12 @@ export default {
         },
     },
     actions: {
-        async getEvents({commit}) {
-            await axios.get('https://colab8.herokuapp.com/api/users/events')
-                .then(res => {
-                    console.log(res);
-                    commit('ADD_EVENT', res)
-                })
-        }
+        // async fetchEvents({commit}) {
+        //     await axios.get('https://colab8.herokuapp.com/api/users/events')
+        //         .then(res => {
+        //             console.log(res);
+        //             commit('ADD_EVENT', res)
+        //         })
+        // }
     }
 }
