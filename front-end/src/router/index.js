@@ -6,6 +6,7 @@ import ContactInfo from "@/views/ContactInfo";
 import LogIn from "@/views/auth/LogIn";
 import SignUp from "@/views/auth/SignUp";
 import NotFound from '@/views/NotFound.vue';
+import MeetingRespond from "@/views/MeetingRespond";
 
 
 function authGuard(to, from, next) {
@@ -21,6 +22,11 @@ const routes = [
         path: '/',
         name: 'home',
         component: HomeView
+    },
+    {
+        path: '/rsvp/:id',
+        name: 'MeetingRespond',
+        component: MeetingRespond
     },
     {
         path: '/dashboard',

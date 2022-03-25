@@ -11,7 +11,9 @@ export default createStore({
         meetingMembers: {
             event_id: null,
             contacts: []
-        }
+        },
+        activeMeeting: '',
+        status: null
     },
     getters: {
       getContacts(state) {
@@ -34,6 +36,12 @@ export default createStore({
         },
         ADD_MEETING_ID(state, payload) {
             state.meetingMembers.event_id = payload
+        },
+        UPDATE_ACTIVE_MEETING(state, payload) {
+          state.activeMeeting = payload
+        },
+        UPDATE_STATUS(state, payload) {
+            state.status = payload
         }
     },
     actions: {
@@ -67,6 +75,21 @@ export default createStore({
                 })
                 .catch(error => {
                     console.log(error.response)
+                })
+        },
+        async getMeetingRespound({commit}, id) {
+            await axios.get(`https://colab8.herokuapp.com/api/events/rsvp/${id}`)
+                .then(res => {
+                    commit('UPDATE_ACTIVE_MEETING', res.data)
+                })
+        },
+        async sendRespondStatus({commit}, [payload, id]) {
+            await axios.post(`https://colab8.herokuapp.com/api/events/rsvp/${id}`, {
+                response : payload,
+                rsvp_id : id
+            })
+                .then(() => {
+                    commit('UPDATE_STATUS', payload)
                 })
         }
     },

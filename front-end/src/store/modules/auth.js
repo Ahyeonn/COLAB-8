@@ -45,7 +45,7 @@ export default {
                 password: user.password,
             })
                 .then((res) => {
-                    console.log(res)
+                    console.log(res.data)
                     context.commit('UPDATE_USER', user);
                     context.commit('LOG_IN', true);
                     context.commit(`ADD_EVENT`, res.data)

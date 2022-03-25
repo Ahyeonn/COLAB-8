@@ -3,12 +3,12 @@ import axios from "axios";
 export default {
     state() {
         return {
-            events: [],
+            events: '',
         }
     },
     mutations: {
-        ADD_EVENT(state, event) {
-            state.meetings.push(event)
+        ADD_EVENT(state, payload) {
+            state.events = payload
         },
     },
     actions: {
