@@ -16,10 +16,6 @@ def forbidden(e):
 def bad_request(e):
     return jsonify(error=str(e)), 400
 
-# @user.errorhandler(404)
-# def not_found(e):
-#     return jsonify(error=str(e)), 404
-
 @user.route('/events/<phone_number>', methods=['GET'])
 def dashboard_index(phone_number):
     try:
@@ -81,8 +77,6 @@ def signin():
         if bcrypt.hashpw(request.json['password'].encode('utf-8'), user['password']) == user['password']:
             del user['password']
             session['current_user']=user
-            # global current_number
-            # current_number = user['phone_number']
             return redirect(url_for('user.dashboard_index', phone_number=user['phone_number']))
     
     abort(400, description='Invalid phone_number/password combination')
