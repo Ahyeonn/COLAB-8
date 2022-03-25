@@ -1,7 +1,6 @@
 <script>
 import BaseButton from "@/components/UI/BaseButton";
 
-
 export default {
   name: "DashboardView",
   components: {BaseButton},
@@ -9,13 +8,15 @@ export default {
     getEvents() {
       return this.$store.state.dashboard.events
     },
-    getLoggedInUser() {
+    getAuthenticatedUser() {
       return this.$store.state.auth.authenticatedUser
     }
   },
   methods: {
     async logout() {
       await this.$store.commit('LOG_IN', 'false');
+      await localStorage.setItem('user_id', null);
+      await localStorage.setItem('user_name', null);
       await this.$router.push({path: '/log-in'});
     },
     detail(id) {
@@ -28,7 +29,7 @@ export default {
 <template>
   <h3 class="my-4 text-center">
     👋 Welcome back
-    <span class=" text-capitalize">{{ getLoggedInUser.user_name }}!</span>
+    <span class=" text-capitalize">{{ getAuthenticatedUser.name }}!</span>
   </h3>
       <h3 class="my-3">Your Events</h3>
   <div class="row">

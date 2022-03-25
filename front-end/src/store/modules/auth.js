@@ -9,7 +9,10 @@ export default {
                 phoneNumber: '',
                 password: ''
             },
-            authenticatedUser: {}
+            authenticatedUser: {
+                id: localStorage.getItem('user_id'),
+                name: localStorage.getItem('user_name')
+            }
         }
     },
     mutations: {
@@ -21,11 +24,13 @@ export default {
             localStorage.setItem('is-loggedIn', value);
         },
         SET_AUTHENTICATED_USER(state, payload) {
-            state.authenticatedUser = payload
+            state.authenticatedUser = {
+                id: payload[0].user_id,
+                name: payload[1].user_name,
+            }
+            localStorage.setItem('user_id', payload[0].user_id);
+            localStorage.setItem('user_name', payload[1].user_name);
         }
-        // ADD_EVENT(state, event) {
-        //     state.events.push(event)
-        // },
     },
     actions: {
         async register(context, user) {
@@ -50,10 +55,11 @@ export default {
             })
                 .then((res) => {
                     console.log(res.data[2])
+                    const data = res.data
                     context.commit('UPDATE_USER', user);
                     context.commit('LOG_IN', true);
-                    context.commit(`ADD_EVENT`, res.data[0].events)
-                    context.commit('SET_AUTHENTICATED_USER', res.data[2])
+                    context.commit(`ADD_EVENT`, data[0].events)
+                    context.commit('SET_AUTHENTICATED_USER', [data[1], data[2]])
                 })
                 .catch(error => {
                     console.log(error)

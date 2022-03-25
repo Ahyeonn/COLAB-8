@@ -45,10 +45,10 @@ export default createStore({
         }
     },
     actions: {
-       createMeeting(context, meeting) {
+       createMeeting({context, state}, meeting) {
             axios.post('https://colab8.herokuapp.com/api/events/create', {
                 event_id: meeting.id,
-                owner_id: null,
+                owner_id: state.auth.authenticatedUser.id,
                 name: meeting.hostName,
                 host_number : meeting.hostNumber,
                 event_name: meeting.name,
