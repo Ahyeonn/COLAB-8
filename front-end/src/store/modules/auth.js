@@ -18,7 +18,10 @@ export default {
         LOG_IN(state, value) {
             state.isLoggedIn = value;
             localStorage.setItem('is-loggedIn', value);
-        }
+        },
+        // ADD_EVENT(state, event) {
+        //     state.events.push(event)
+        // },
     },
     actions: {
         async register(context, user) {
@@ -45,9 +48,13 @@ export default {
                     console.log(res)
                     context.commit('UPDATE_USER', user);
                     context.commit('LOG_IN', true);
+                    context.commit(`ADD_EVENT`, res.data)
                 })
                 .catch(error => {
-                    throw error.response.data.error
+                    console.log(error)
+                    if (error.response) {
+                        throw error.response.data.error
+                    }
                 })
         },
     }

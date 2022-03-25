@@ -21,7 +21,6 @@ export default createStore({
       },
         getMeeting(state) {
               return state.meetings.map(meeting =>{
-                  console.log(meeting)
                   return meeting
               });
         }
@@ -32,6 +31,9 @@ export default createStore({
         },
         ADD_CONTACT(state, contact) {
             state.meetingMembers.contacts.push(contact)
+        },
+        ADD_MEETING_ID(state, payload) {
+            state.meetingMembers.event_id = payload
         }
     },
     actions: {
@@ -53,13 +55,14 @@ export default createStore({
                     console.log(error.response)
                 })
         },
-        sendRecipients(context, meetingMembers) {
-            axios.post('https://colab8.herokuapp.com/api/events/rsvp', {
+        async sendRecipients({context}, [meetingMembers, meeting_id]) {
+            await axios.post('https://colab8.herokuapp.com/api/events/rsvp', {
                 contacts : meetingMembers,
-                event_id : 100
+                event_id : meeting_id
             })
                 .then(res => {
                     console.log(res.data);
+                    context.commit('ADD_MEETING_ID', meeting_id);
                     context.commit('ADD_CONTACT', meetingMembers);
                 })
                 .catch(error => {
